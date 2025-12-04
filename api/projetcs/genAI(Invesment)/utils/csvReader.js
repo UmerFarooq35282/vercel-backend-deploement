@@ -14,4 +14,4 @@ const CSVReader = (fileBuffer) => {
     })
 }
 
-export default CSVReader 
+export { CSVReader } 

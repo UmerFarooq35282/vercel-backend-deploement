@@ -23,6 +23,8 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }))
 
+connectDB();
+
 app.use("/api/auth", authRouter)
 app.use("/api/portfolio/project", projectRoutes)
 app.use("/api/genAI/investmentAgent", responseRouter)
@@ -34,10 +36,8 @@ app.get("/", asyncHandler(async (req, res, next) => {
 
 app.use(errorHandlerMiddleware);
 
-
 app.listen(PORT, () => {
   console.log("App is running on port ", PORT)
-  connectDB();
 })
 
 module.exports = app;

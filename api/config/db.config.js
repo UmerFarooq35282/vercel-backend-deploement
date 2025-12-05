@@ -25,8 +25,10 @@ const connectDB = async () => {
         await mongoose.connect(dbURL);
 
         console.log(`✅ MongoDB connected in ${process.env.APP_MODE} mode`);
+        return `✅ MongoDB connected in ${process.env.APP_MODE} mode`
     } catch (error) {
         console.error("❌ Error in DB Connection:", error.message);
+        return `❌ Error in DB Connection: ${error.message}`
         process.exit(1);
     }
 };

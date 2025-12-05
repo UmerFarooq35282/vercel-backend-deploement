@@ -28,7 +28,8 @@ app.use("/api/portfolio/project", projectRoutes)
 app.use("/api/genAI/investmentAgent", responseRouter)
 
 app.get("/", asyncHandler(async (req, res, next) => {
-  throw new SuccessResponse("Express backend Vercel par successfully chal raha hai!")
+  const connectionResponse = await connectDB();
+  throw new SuccessResponse(`Express backend Vercel par successfully chal raha hai! ${connectionResponse}`)
 }));
 
 app.use(errorHandlerMiddleware);

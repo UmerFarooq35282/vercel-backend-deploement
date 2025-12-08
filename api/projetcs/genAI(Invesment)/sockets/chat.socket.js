@@ -1,15 +1,26 @@
+import asyncHandler from "../../../utils/asyncHandler.js";
 import { Chat } from "../models/chat.model.js";
 import { generateAIResponse } from "../utils/aiAgent.helper.js";
+import JWT from "jsonwebtoken";
 
 export const aiAgentSocket = (io) => {
-  io.on("connection", (socket) => {
-    console.log("🟢 User connected:", socket.id);
+  io.on("connection", asyncHandler(async (socket) => {
+    try {
+      const token = socket.handshake?.auth?.token;
+      if (!token) {
+        console.log("❌ Token missing, disconnecting socket...");
+        socket.disconnect(true);
+        return;
+      }
 
-    socket.on("send_message", async ({ userId, chatId, title, text, csvData }) => {
-      try {
+      const decoded = JWT.verify(token, process.env.JWT_SECRET);
+      const userID = decoded._id;
+      console.log("🟢 Socket connected:", socket.id, "User:", userID);
+
+      socket.on("send_message", async ({ chatId, title, text, csvData }) => {
         let chat =
-          chatId && (await Chat.findById(chatId)) ||
-          (await Chat.create({ userId, title, messages: [] }));
+          (chatId && (await Chat.findById(chatId))) ||
+          (await Chat.create({ userId: userID, title, messages: [] }));
 
         chat.messages.push({ role: "user", text });
         await chat.save();
@@ -24,18 +35,16 @@ export const aiAgentSocket = (io) => {
           role: "bot",
           text: aiResponse.message,
           data: aiResponse.data,
+          title: aiResponse.title
         });
-      } catch (err) {
-        console.error("Socket Error:", err.message);
-        io.to(socket.id).emit("receive_message", {
-          role: "bot",
-          text: "⚠️ AI failed to respond. Please try again.",
-        });
-      }
-    });
+      });
 
-    socket.on("disconnect", () => {
-      console.log("🔴 User disconnected:", socket.id);
-    });
-  });
+      socket.on("disconnect", () => {
+        console.log("🔴 User disconnected:", socket.id);
+      });
+    } catch (error) {
+      console.error("❌ Socket Auth Error:", error.message);
+      socket.disconnect(true);
+    }
+  }));
 };

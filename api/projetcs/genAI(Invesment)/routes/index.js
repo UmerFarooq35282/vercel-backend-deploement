@@ -1,3 +1,4 @@
 const responseRouter = require("./response.route.js");
+const chatsRouter = require("./chat.route.js");
 
-module.exports = { responseRouter };
+module.exports = { responseRouter, chatsRouter };

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Investment AI Agent API Docs</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      pre {
+        background-color: #0f172a;
+        color: #e2e8f0;
+        padding: 1rem;
+        border-radius: 0.5rem;
+        overflow-x: auto;
+      }
+      code {
+        color: #38bdf8;
+      }
+      .copy-btn {
+        background-color: #1e293b;
+        color: #38bdf8;
+        border: 1px solid #334155;
+        font-size: 0.8rem;
+        border-radius: 0.4rem;
+        padding: 0.3rem 0.6rem;
+        margin-top: 0.4rem;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+      .copy-btn:hover {
+        background-color: #0f172a;
+        color: #7dd3fc;
+      }
+      .card {
+        transition: all 0.3s ease;
+        background: linear-gradient(to bottom right, #0f172a, #1e293b);
+      }
+      .card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 0 20px rgba(56, 189, 248, 0.15);
+      }
+    </style>
+  </head>
+
+  <body class="bg-slate-950 text-slate-200 font-sans">
+    <div class="max-w-7xl mx-auto py-10 px-6">
+      <!-- Header -->
+      <header class="text-center mb-10">
+        <h1 class="text-4xl font-bold text-sky-400 mb-2">
+          Investment AI Agent API Docs
+        </h1>
+        <p class="text-slate-400">
+          🚀 Built by
+          <span class="text-sky-300 font-semibold">Umer Farooq</span> —
+          <span class="text-indigo-400">Backend Developer</span>
+        </p>
+        <p class="text-slate-500 text-sm mt-2">
+          Real-time AI analytics and investment insights powered by Node.js &
+          Express.
+        </p>
+      </header>
+
+      <!-- API Cards -->
+      <section class="grid md:grid-cols-3 gap-6">
+        <!-- Auth Routes -->
+        <div class="card border border-slate-700 rounded-2xl p-5">
+          <h3
+            class="text-xl font-semibold text-sky-400 mb-3 flex items-center gap-2"
+          >
+            🔐 Auth Routes
+          </h3>
+          <div class="text-sm space-y-4">
+            <div>
+              <span class="text-green-400 font-mono">POST</span>
+              <a
+                href="/api/auth/signup"
+                target="_blank"
+                class="text-sky-300 font-mono block"
+              >
+                /api/auth/signup
+              </a>
+              <p class="text-slate-400">Create new user account</p>
+              <button
+                class="copy-btn"
+                onclick="copyToClipboard('/api/auth/signup')"
+              >
+                📋 Copy URL
+              </button>
+              <pre><code>{
+  "username": "John Doe",
+  "email": "john@example.com",
+  "password": "123456"
+}</code></pre>
+            </div>
+
+            <div>
+              <span class="text-green-400 font-mono">POST</span>
+              <a
+                href="/api/auth/login"
+                target="_blank"
+                class="text-sky-300 font-mono block"
+              >
+                /api/auth/login
+              </a>
+              <p class="text-slate-400">Authenticate existing user</p>
+              <button
+                class="copy-btn"
+                onclick="copyToClipboard('/api/auth/login')"
+              >
+                📋 Copy URL
+              </button>
+              <pre><code>{
+  "email": "john@example.com",
+  "password": "123456"
+}</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <!-- AI Routes -->
+        <div class="card border border-slate-700 rounded-2xl p-5">
+          <h3
+            class="text-xl font-semibold text-sky-400 mb-3 flex items-center gap-2"
+          >
+            🤖 AI Agent Routes
+          </h3>
+          <div class="text-sm space-y-4">
+            <div>
+              <span class="text-blue-400 font-mono">POST</span>
+              <a
+                href="/api/genAI/investmentAgent/getResponse"
+                target="_blank"
+                class="text-sky-300 font-mono block"
+              >
+                /api/genAI/investmentAgent/getResponse
+              </a>
+              <p class="text-slate-400">
+                Send text or CSV file for AI analysis
+              </p>
+              <button
+                class="copy-btn"
+                onclick="copyToClipboard('/api/genAI/investmentAgent/getResponse')"
+              >
+                📋 Copy URL
+              </button>
+              <pre><code>Content-Type: multipart/form-data
+Form fields:
+- userPrompt: "Analyze this company"
+- file: (attach CSV file)</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <!-- Portfolio Routes -->
+        <div class="card border border-slate-700 rounded-2xl p-5">
+          <h3
+            class="text-xl font-semibold text-sky-400 mb-3 flex items-center gap-2"
+          >
+            📊 Portfolio Routes
+          </h3>
+          <div class="text-sm space-y-4">
+            <div>
+              <span class="text-green-400 font-mono">GET</span>
+              <a
+                href="/api/portfolio/project/get"
+                target="_blank"
+                class="text-sky-300 font-mono block"
+              >
+                /api/portfolio/project/get
+              </a>
+              <p class="text-slate-400">Fetch all investment projects</p>
+              <button
+                class="copy-btn"
+                onclick="copyToClipboard('/api/portfolio/project/get')"
+              >
+                📋 Copy URL
+              </button>
+            </div>
+
+            <div>
+              <span class="text-blue-400 font-mono">POST</span>
+              <a
+                href="/api/portfolio/project/add"
+                target="_blank"
+                class="text-sky-300 font-mono block"
+              >
+                /api/portfolio/project/add
+              </a>
+              <p class="text-slate-400">
+                Add new investment project (JSON body)
+              </p>
+              <button
+                class="copy-btn"
+                onclick="copyToClipboard('/api/portfolio/project/add')"
+              >
+                📋 Copy URL
+              </button>
+              <pre><code>{
+  "projectName": "Alpha Ventures",
+  "investment": 50000,
+  "category": "AI"
+}</code></pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <footer class="mt-12 text-slate-500 text-sm text-center">
+        © <span id="year"></span> Umer Farooq |
+        <a
+          href="https://umfarooq.dev"
+          target="_blank"
+          class="text-sky-400 hover:underline"
+        >
+          www.umfarooq.dev
+        </a>
+      </footer>
+    </div>
+
+    <script>
+      function copyToClipboard(url) {
+        const fullUrl = `${window.location.origin}${url}`;
+        navigator.clipboard.writeText(fullUrl);
+        alert(`✅ Copied: ${fullUrl}`);
+      }
+      document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
+  </body>
+</html>

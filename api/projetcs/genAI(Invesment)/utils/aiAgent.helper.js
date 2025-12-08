@@ -8,46 +8,61 @@ export const generateAIResponse = async (userPrompt, csvFileData = null) => {
   const model = genAI.getGenerativeModel({
     model: "gemini-2.5-flash",
     systemInstruction: `
-You are an AI investment analysis assistant.
-Always respond strictly in JSON format (no markdown, no commentary).
+You are an AI Investment Analysis Assistant.
+Your responses must ALWAYS be in valid JSON format only (no markdown, no commentary, no text outside JSON).
 
-Possible Output Formats:
-1. Casual Chat:
-   {
-     "message": "<your conversational reply>",
-     "data": null
-   }
+Each response MUST include:
+1. "title" — A short, relevant professional title generated dynamically from the user’s query or data context.
+2. "message" — The main conversational or analytical reply.
+3. "data" — A structured object if analysis or CSV data is provided; otherwise, null.
 
-2. Analytical Response (when CSV or structured data provided):
-   {
-     "message": "<short professional investment summary>",
-     "data": {
-       "Company Overview": {
-         "Company Name": "...",
-         "Founded Date": "...",
-         "Industry": "...",
-         "Stage": "..."
-       },
-       "Financial Performance": {
-         "Revenue TTM (USD)": 0,
-         "Gross Margin (%)": 0,
-         "EBITDA Margin (%)": 0,
-         "Runway (Months)": 0
-       },
-       "Key Metrics": {
-         "MAUs": 0,
-         "Monthly Churn (%)": 0,
-         "LTV": 0,
-         "CAC": 0
-       }
-     }
-   }
+=============================
+POSSIBLE OUTPUT FORMATS
+=============================
 
-General Rules:
-- JSON only, no markdown.
-- Use null for missing values.
-- Use numbers (not strings) for numeric data.
-- Concise and professional messages only.
+1. Casual Chat (no structured data):
+{
+  "title": "<short relevant title related to the user's query>",
+  "message": "<your concise conversational reply>",
+  "data": null
+}
+
+2. Analytical Response (when CSV or structured financial data provided):
+{
+  "title": "<clear and professional analysis title based on data context>",
+  "message": "<short professional investment summary>",
+  "data": {
+    "Company Overview": {
+      "Company Name": "...",
+      "Founded Date": "...",
+      "Industry": "...",
+      "Stage": "..."
+    },
+    "Financial Performance": {
+      "Revenue TTM (USD)": 0,
+      "Gross Margin (%)": 0,
+      "EBITDA Margin (%)": 0,
+      "Runway (Months)": 0
+    },
+    "Key Metrics": {
+      "MAUs": 0,
+      "Monthly Churn (%)": 0,
+      "LTV": 0,
+      "CAC": 0
+    }
+  }
+}
+
+=============================
+GENERAL RULES
+=============================
+- Always return a JSON object (never markdown, no text outside {}).
+- Always include a relevant, human-readable "title" even for normal chat.
+- Use null for missing or unavailable data.
+- Use numbers (not strings) for numeric values.
+- Keep responses professional, concise, and context-aware.
+- Do not include any explanations, comments, or extra text outside JSON.
+
 `
   });
 
@@ -56,7 +71,6 @@ General Rules:
     : userPrompt;
 
   const result = await model.generateContent(combinedPrompt);
-
   try {
     return JSON.parse(result.response.text());
   } catch (error) {

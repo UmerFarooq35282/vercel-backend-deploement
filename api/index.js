@@ -3,14 +3,14 @@ const dotenv = require("dotenv");
 const cors = require("cors");
 const http = require("http");
 const { Server } = require("socket.io");
+const path = require("path");
 const { aiAgentSocket } = require("./projetcs/genAI(Invesment)/sockets/chat.socket.js");
 
 const authRouter = require("./routes/auth.route.js");
 const { connectDB } = require("./config/db.config.js");
 const { projectRoutes } = require("./projetcs/portfolio/routes");
-const { responseRouter } = require("./projetcs/genAI(Invesment)/routes/index.js");
+const { responseRouter, chatsRouter } = require("./projetcs/genAI(Invesment)/routes/index.js");
 const { originFilter } = require("./config/origin.config.js");
-const { SuccessResponse, ErrorResponse } = require("./utils/sendingResponse.js");
 const asyncHandler = require("./utils/asyncHandler.js");
 const { errorHandlerMiddleware } = require("./middleware/errorHandler.middleware.js");
 
@@ -35,10 +35,12 @@ connectDB();
 app.use("/api/auth", authRouter);
 app.use("/api/portfolio/project", projectRoutes);
 app.use("/api/genAI/investmentAgent", responseRouter);
+app.use("/api/genAI/investmentAgent/chat", chatsRouter);
 
 // ✅ Root route
 app.get("/", asyncHandler(async (req, res, next) => {
-  throw new SuccessResponse("Express backend Vercel par successfully chal raha hai!");
+  res.sendFile(path.join(__dirname, "views", "info.html"))
+  // throw new SuccessResponse("Express backend Vercel par successfully chal raha hai!");
 }));
 
 // ✅ Error middleware
